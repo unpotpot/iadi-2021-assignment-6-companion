@@ -67,7 +67,5 @@ class BookController(val books: BookService, val authors: AuthorService) : Books
         }
 
         @CanDeleteBook
-        override fun deleteOne(id: Long) {
-            TODO("Not implemented")
-        }
+        override fun deleteOne(id: Long) { books.deleteOne(id) }
 }
