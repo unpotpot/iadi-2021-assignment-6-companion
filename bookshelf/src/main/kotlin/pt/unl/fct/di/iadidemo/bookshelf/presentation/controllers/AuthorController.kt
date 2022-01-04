@@ -1,8 +1,11 @@
 package pt.unl.fct.di.iadidemo.bookshelf.presentation.controllers
 
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
 import pt.unl.fct.di.iadidemo.bookshelf.application.services.AuthorService
 import pt.unl.fct.di.iadidemo.bookshelf.config.*
+import pt.unl.fct.di.iadidemo.bookshelf.domain.AuthorDAO
 import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.AuthorAPI
 import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.dto.*
 
@@ -29,20 +32,31 @@ class AuthorController(val authors: AuthorService) : AuthorAPI {
             it.name
         ) }
 
+    @CanSeeAuthors
     override fun addOne(elem: AuthorsBookDTO) {
-        TODO("Not yet implemented")
+        authors.addOne(AuthorDAO(0, elem.name))
     }
 
-    override fun getOne(id: Long): AuthorDTO {
-        TODO("Not yet implemented")
-    }
+    @CanSeeAuthors
+    override fun getOne(id: Long): AuthorDTO =
+        authors
+            .getOne(id)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found ${id}") }
+            .let {
+                AuthorDTO(
+                    it.id,
+                    it.name
+                )
+            }
 
+    @CanSeeAuthors
     override fun updateOne(id: Long, elem: AuthorsBookDTO) {
         TODO("Not yet implemented")
     }
 
+    @CanSeeAuthors
     override fun deleteOne(id: Long) {
-        TODO("Not yet implemented")
+        authors.deleteOne(id)
     }
 
 }
