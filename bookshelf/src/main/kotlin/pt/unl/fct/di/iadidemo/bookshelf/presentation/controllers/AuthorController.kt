@@ -1,15 +1,9 @@
 package pt.unl.fct.di.iadidemo.bookshelf.presentation.controllers
 
-import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.server.ResponseStatusException
 import pt.unl.fct.di.iadidemo.bookshelf.application.services.AuthorService
-import pt.unl.fct.di.iadidemo.bookshelf.domain.BookDAO
-import pt.unl.fct.di.iadidemo.bookshelf.application.services.BookService
 import pt.unl.fct.di.iadidemo.bookshelf.config.*
-import pt.unl.fct.di.iadidemo.bookshelf.domain.ImageDAO
 import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.AuthorAPI
-import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.BooksAPI
 import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.dto.*
 
 /**
