@@ -1,5 +1,6 @@
 package pt.unl.fct.di.iadidemo.bookshelf.application.services
 
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadidemo.bookshelf.application.services.exceptions.NoBookException
 import pt.unl.fct.di.iadidemo.bookshelf.domain.BookDAO
@@ -24,7 +25,7 @@ import java.util.*
 @Service
 class BookService(val books: BookRepository) {
 
-    fun getAll(): List<BookDAO> = books.findAll().toList()
+    fun getAll(page: Int, size: Int): List<BookDAO> = books.findAll(PageRequest.of(page,size)).toList()
 
     fun addOne(book: BookDAO): BookDAO = books.save(book)
 
