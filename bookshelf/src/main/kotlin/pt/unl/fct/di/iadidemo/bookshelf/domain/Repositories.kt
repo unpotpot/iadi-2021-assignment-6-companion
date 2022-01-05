@@ -21,7 +21,7 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface UserRepository : PagingAndSortingRepository<UserDAO, String>
 
-interface BookRepository : CrudRepository<BookDAO, Long>
+interface BookRepository : PagingAndSortingRepository<BookDAO, Long>
 
 interface RoleRepository : CrudRepository<RoleDAO, String>
 

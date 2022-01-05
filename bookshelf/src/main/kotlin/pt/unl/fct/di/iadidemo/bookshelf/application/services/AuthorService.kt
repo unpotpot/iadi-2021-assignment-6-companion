@@ -15,7 +15,7 @@ class AuthorService(val authors:AuthorRepository) {
 
     fun getAll(): List<AuthorDAO> = authors.findAll().toList()
 
-    fun addOne(author: AuthorDAO):Unit { authors.save(author) }
+    fun addOne(author: AuthorDAO):AuthorDAO = authors.save(author)
 
     fun getOne(id:Long):Optional<AuthorDAO> = authors.findById(id)
 
