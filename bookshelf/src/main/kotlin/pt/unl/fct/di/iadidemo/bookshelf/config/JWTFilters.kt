@@ -66,22 +66,19 @@ private class UserAuthToken(
 * Add session info to response
 * */
 
-private fun addResponseToken(authentication: Authentication, response: HttpServletResponse, includeCredentials: Boolean, expireToken: Boolean) {
+private fun addResponseToken(authentication: Authentication, response: HttpServletResponse, includeCredentials: Boolean) {
 
     val auth = authentication as UserAuthToken
     val claims = HashMap<String, Any?>()
     claims["username"] = auth.name
     claims["session"] = auth.getSession()
 
-    var validity = JWTSecret.VALIDITY
-    if (expireToken)
-        validity = 0
     val token = Jwts
         .builder()
         .setClaims(claims)
         .setSubject(JWTSecret.SUBJECT)
         .setIssuedAt(Date(System.currentTimeMillis()))
-        .setExpiration(Date(System.currentTimeMillis() + validity))
+        .setExpiration(Date(System.currentTimeMillis() + JWTSecret.VALIDITY))
         .signWith(SignatureAlgorithm.HS256, JWTSecret.KEY)
         .compact()
 
@@ -142,7 +139,7 @@ class UserPasswordAuthenticationFilterToJWT (
                                           auth: Authentication) {
 
         // When returning from the Filter loop, add the token to the response
-        addResponseToken(auth, response, true, false)
+        addResponseToken(auth, response, true)
     }
 }
 
@@ -172,7 +169,6 @@ class Logout(private val sessions: SessionService): LogoutHandler {
 class LogoutSuccess(): LogoutSuccessHandler {
     override fun onLogoutSuccess(request: HttpServletRequest, response: HttpServletResponse, auth: Authentication) {
         response.status = HttpServletResponse.SC_OK
-        addResponseToken(auth, response, false, true)
     }
 }
 
@@ -215,7 +211,7 @@ class JWTAuthenticationFilter(private val users: UserService,
                     SecurityContextHolder.getContext().authentication = authentication
 
                     // Renew token with extended time here. (before doFilter)
-                    addResponseToken(authentication, response as HttpServletResponse, false, false)
+                    addResponseToken(authentication, response as HttpServletResponse, false)
 
                     chain!!.doFilter(request, response)
                 }
