@@ -26,16 +26,19 @@ import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.dto.*
 class AuthorController(val authors: AuthorService) : AuthorAPI {
 
     @CanSeeAuthors
-    override fun getAll(): List<AuthorDTO> =
+    override fun getAll(page: Int, size: Int): List<AuthorDTO> =
         authors.getAll().map { AuthorDTO(
             it.id,
             it.name
         ) }
 
     @CanSeeAuthors
-    override fun addOne(elem: AuthorsBookDTO) {
+    override fun addOne(elem: AuthorsBookDTO): AuthorDTO =
         authors.addOne(AuthorDAO(0, elem.name))
-    }
+            .let { AuthorDTO(
+                it.id,
+                it.name
+            ) }
 
     @CanSeeAuthors
     override fun getOne(id: Long): AuthorDTO =
@@ -50,7 +53,7 @@ class AuthorController(val authors: AuthorService) : AuthorAPI {
             }
 
     @CanSeeAuthors
-    override fun updateOne(id: Long, elem: AuthorsBookDTO) {
+    override fun updateOne(id: Long, elem: AuthorsBookDTO):AuthorDTO {
         TODO("Not yet implemented")
     }
 

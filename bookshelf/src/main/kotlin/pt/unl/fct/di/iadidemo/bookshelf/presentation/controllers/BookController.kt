@@ -28,8 +28,8 @@ import pt.unl.fct.di.iadidemo.bookshelf.presentation.api.dto.*
 class BookController(val books: BookService, val authors: AuthorService) : BooksAPI {
 
     @CanSeeBooks
-    override fun getAll(): List<BookListDTO> =
-        books.getAll().map {
+    override fun getAll(page: Int, size: Int): List<BookListDTO> =
+        books.getAll(page, size).map {
             BookListDTO(
                 it.id,
                 it.title,
