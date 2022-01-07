@@ -1,6 +1,7 @@
 package pt.unl.fct.di.iadidemo.bookshelf.config
 
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -23,6 +24,7 @@ class SecurityConfig(
             .csrf().disable() // This allows applications to access endpoints from any source location
             .authorizeRequests()
             .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+            .antMatchers(HttpMethod.GET,"/user/books","/authors").permitAll()
             .anyRequest().authenticated()
             .and().httpBasic()
             // Missing the sign-up, sign-in and sign-out endpoints
